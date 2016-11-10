@@ -1,0 +1,4 @@
+Client ID
+651648423419-mrthieo9ivv9pjpmr4ggcrlflhctppka.apps.googleusercontent.com
+Client secret
+2CYVzPlQte2NDfVYX5U5-OAM
