@@ -8,6 +8,7 @@
 	<meta name="google-signin-client_id" content="651648423419-mrthieo9ivv9pjpmr4ggcrlflhctppka.apps.googleusercontent.com">
 	<script type="text/javascript">
 		var profile;
+		var currentUser;
 
 		/* Sign-IN */
 		function onSignIn(googleUser) {
@@ -16,12 +17,19 @@
 				"id": profile.getId(),
 				"name": profile.getName(),
 				"image": profile.getImageUrl(),
-				"email": profile.getEmail()
+				"email": profile.getEmail(),
+				"online":true
 			}
 
+			currentUser = user;
+
+			// Create user when login
 			axios.post('/users', user)
 				.then(function(success){
-					console.log('Success Message : ', success);
+					return axios.get('/users');
+				})
+				.then(function(res){
+					console.log('USERS:', res.data);
 				})
 		}
 
@@ -29,7 +37,15 @@
 		function signOut() {
     	var auth2 = gapi.auth2.getAuthInstance();
     	auth2.signOut().then(function () {
-      	console.log('User signed out.');
+      	console.log('User signed out.', currentUser.id);
+      	var config = {
+      		headers: {'uid': currentUser.id}
+      	}
+
+      	axios.post('/logout', {}, config)
+      		.then(function(data){
+      			console.log('Data :',data);
+      		})
     	});
   	}
 	</script>
