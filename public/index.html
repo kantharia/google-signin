@@ -4,6 +4,7 @@
 	<meta charset="UTF-8">
 	<title>Google Sign-in</title>
 	<script src="https://apis.google.com/js/platform.js" async defer></script>
+	<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 	<meta name="google-signin-client_id" content="651648423419-mrthieo9ivv9pjpmr4ggcrlflhctppka.apps.googleusercontent.com">
 	<script type="text/javascript">
 		var profile;
@@ -11,10 +12,17 @@
 		/* Sign-IN */
 		function onSignIn(googleUser) {
 			profile = googleUser.getBasicProfile();
-			console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
-			console.log('Name: ' + profile.getName());
-			console.log('Image URL: ' + profile.getImageUrl());
-			console.log('Email: ' + profile.getEmail());
+			var user = {
+				"id": profile.getId(),
+				"name": profile.getName(),
+				"image": profile.getImageUrl(),
+				"email": profile.getEmail()
+			}
+
+			axios.post('/users', user)
+				.then(function(success){
+					console.log('Success Message : ', success);
+				})
 		}
 
 		/* Sign-Out */
